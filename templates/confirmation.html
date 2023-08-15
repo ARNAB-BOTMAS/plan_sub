@@ -1,0 +1,27 @@
+<!-- checkout.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Checkout</title>
+    <script src="https://js.stripe.com/v3/"></script>
+</head>
+<body>
+    <h1>Checkout Page</h1>
+    <button id="checkout-button" data-session-id="{{ session_id }}">Proceed to Checkout</button>
+
+    <script>
+        const stripe = Stripe('YOUR_STRIPE_PUBLIC_KEY');
+        const checkoutButton = document.getElementById('checkout-button');
+        checkoutButton.addEventListener('click', async () => {
+            const sessionID = checkoutButton.getAttribute('data-session-id');
+            const { error } = await stripe.redirectToCheckout({
+                sessionId: sessionID
+            });
+            if (error) {
+                console.error(error);
+            }
+        });
+    </script>
+</body>
+</html>
+

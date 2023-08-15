@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Stripe Payment Checkout</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="topnav" id="myTopnav">
+        <a href="/" class="active">Home</a>
+        <a href="/signin">Sign In</a>
+        <a href="/signup">Sign Up</a>
+        <a href="/logout">Logout</a>
+        <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+          <i class="fa fa-bars"></i>
+        </a>
+    </div>
+    {% if subs %}
+        <h1>You have a subscription!</h1>
+        <h3>Plan : {{ product_name }}</h3>
+        <h3>Subscription Type : {{ subscription_type }}</h3>
+    {% else %}
+        <h1>No Active Plan</h1>
+        <h2>Stripe Payment Checkout</h2>
+        <div id="payment-form">
+            <!-- <button onclick="showTable('table1')">Table 1</button>
+            <button onclick="showTable('table2')">Table 2</button> -->
+            <div id="table1" class="table-container active">
+                <h2>Monthly Subscription Plans</h2>
+                <table border="none">
+                    <tr>
+                        <th>
+                            <button onclick="showTable('table1')" style="background-color: white; color: #007bff; border: 5px #007bff solid; border-radius: 4px">Table 1</button>
+                            <button onclick="showTable('table2')">Table 2</button>
+                        </th>
+                        {% for row in monthly_database %}
+                            <th>{{ row['product_name'] }}</th>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <td>Quality</td>
+                        {% for row in monthly_database %}
+                            <td>{{ row['product_quality'] }}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <td>Resolution</td>
+                        {% for row in monthly_database %}
+                            <td>{{ row['product_rag'] }}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <td>Devices</td>
+                        {% for row in monthly_database %}
+                            <td>{{ row['product_device'] }}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <td>Price</td>
+                        {% for row in monthly_database %}
+                            <td>{{ row['price_amount'] }}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <td></td>
+                        {% for row in monthly_database %}
+                            <td>
+                                <form action="/create-checkout-session" method="POST">
+                                    <input type="hidden" name="plan_id" value="{{ row['price_id'] }}">
+                                    <button type="submit">Buy Plan</button>
+                                </form>
+                            </td>
+                        {% endfor %}
+                    </tr>                    
+                </table>
+            </div>
+            <div id="table2" class="table-container" style="display: none;">
+                <h2>Yearly Subscription Plans</h2>
+                <table border="none">
+                    <tr>
+                        <th>
+                            <button onclick="showTable('table1')" >Table 1</button>
+                            <button onclick="showTable('table2')" style="background-color: white; color: #007bff; border: 5px #007bff solid; border-radius: 4px">Table 2</button>
+                        </th>
+                        {% for row in yearly_database %}
+                            <th>{{ row['product_name'] }}</th>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <td>Quality</td>
+                        {% for row in yearly_database %}
+                            <td>{{ row['product_quality'] }}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <td>Resolution</td>
+                        {% for row in yearly_database %}
+                            <td>{{ row['product_rag'] }}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <td>Devices</td>
+                        {% for row in yearly_database %}
+                            <td>{{ row['product_device'] }}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <td>Price</td>
+                        {% for row in yearly_database %}
+                            <td>{{ row['price_amount'] }}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <td></td>
+                        {% for row in monthly_database %}
+                            <td>
+                                <form action="/create-checkout-session" method="POST">
+                                    <input type="hidden" name="plan_id" value="{{ row['price_id'] }}">
+                                    <button type="submit">Buy Plan</button>
+                                </form>                                
+                            </td>
+                        {% endfor %}
+                    </tr>
+                </table>
+            </div>
+        </div>
+    {% endif %}
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script>
+        function showTable(tableId) {
+            var containers = document.getElementsByClassName('table-container');
+            for (var i = 0; i < containers.length; i++) {
+                containers[i].style.display = 'none';
+            }
+            var tableContainer = document.getElementById(tableId);
+            tableContainer.style.display = 'block';
+        }
+        function buyPlan(planName) {
+            // Implement your buy plan logic here
+            alert('Buying ' + planName + ' plan...');
+        }
+    </script>
+</body>
+</html>

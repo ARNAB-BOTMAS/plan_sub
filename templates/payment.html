@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Payment</title>
+    <script src="https://js.stripe.com/v3/"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+    <h2>Payment</h2>
+    <div id="payment-form">
+        <div id="card-element"></div>
+        <button id="submit">Pay</button>
+        <div id="payment-result"></div>
+    </div>
+    <script>
+        var stripe = Stripe('pk_test_51Nf1FtSE3pf7X1MU3kSFUd9wMDixBTyqRgW42U8j9kSrWnMfTSezuKeYFClkZv64Lv8VF6E1JGLV3QsWJ3Ry2M8K00grJYWgTX');
+        var elements = stripe.elements();
+        var card = elements.create('card');
+        card.mount('#card-element');
+
+        var submitButton = document.getElementById('submit');
+        var paymentResult = document.getElementById('payment-result');
+
+        // Use a test card number for quick testing (do not use real card numbers)
+        var testCardNumber = '4242424242424242';
+
+        submitButton.addEventListener('click', function(event) {
+            event.preventDefault();
+
+            stripe.createPaymentMethod({
+                type: 'card',
+                card: card,
+                billing_details: {
+                    name: 'Test User',
+                },
+            }).then(function(result) {
+                if (result.error) {
+                    paymentResult.innerHTML = result.error.message;
+                } else {
+                    fetch('/complete-payment', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ paymentMethodId: result.paymentMethod.id, product_id: 'replace_with_actual_product_id', interval: 'replace_with_actual_interval' })
+                    }).then(function(response) {
+                        return response.json();
+                    }).then(function(data) {
+                        if (data.success) {
+                            paymentResult.innerHTML = 'Payment successful!';
+                        } else {
+                            paymentResult.innerHTML = 'Payment failed. Please try again.';
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

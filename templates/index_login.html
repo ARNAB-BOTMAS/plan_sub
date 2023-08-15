@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="topnav" id="myTopnav">
+    <a href="/" class="active">Home</a>
+    <a href="/signin">Sign In</a>
+    <a href="/signup">Sign Up</a>
+    <a href="/logout">Logout</a>
+    <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+      <i class="fa fa-bars"></i>
+    </a>
+  </div>
+  <div class="body">
+    <div class="container">
+      <h1>Welcome to our test website</h1>
+      <h2>a virtual sandbox for web development enthusiasts, programmers,<br>and learners alike. Our test website is designed to provide a safe and controlled<br>environment where you can experiment with various web technologies,<br>coding techniques, and design elements without the fear of disrupting real applications.</h2>
+      <div>
+        <a href="/logout"><button>Logout</button></a>
+      </div>
+    </div>
+  </div>
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
